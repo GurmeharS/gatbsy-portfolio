@@ -2,24 +2,28 @@ import React from "react"
 import styled from "styled-components"
 import { Container, Row, Col } from 'react-bootstrap'
 import "../styles/styles.scss"
+import { useViewport } from "./viewport"
 
 const constants = require('./constant.js');
 const nameGrid = constants.nameGrid;
 const size = constants.size;
 const nameLength = nameGrid.length;
+const breakpoint = 475; // This width breaks the title
+
 
 const MainTitle = styled.div`
 display: flex;
 flex-wrap: nowrap;
 height: 95vh;
 width: 95vw;
-/* justify-content: center;
-align-items: center; */
 `;
 
 const MainLetterText = styled.h1`
 font-size: 50px;
 color: white;
+@media ${size.mobileL} {
+  font-size: 25px;
+}
 `;
 
 const MainLetterDiv = styled.div`
@@ -28,11 +32,18 @@ width: 100px;
 margin: 10px;
 text-align: center;
 line-height: 50px;
+@media ${size.mobileL} {
+  width: 30px;
+}
 `;
 
 const SecLetterText = styled.p`
 font-size: 40px;
 color: black;
+@media ${size.mobileL} {
+  font-size: 20px;
+  display: none;
+}
 `;
 
 const SecLetterDiv = styled.div`
@@ -41,31 +52,39 @@ width: 100px;
 margin-left: 10px;
 margin-top: 3px;
 text-align: center;
-line-height: 40px;
+line-height: 35px;
+@media ${size.mobileL} {
+  width: 30px;
+}
 `;
 
-const TitleContainer = styled.div`
-height: 100vh;
-width: 100vw;
-display: flex;
-justify-content: center;
-align-items: center;
+const Page = styled.div`
+@media ${size.mobileS} {
+  max-width: 300px;
+}
+@media ${size.mobileM} {
+  max-width: 350px;
+}
+@media ${size.mobileL} {
+  max-width: 400px;
+}
+@media ${size.tablet} {
+  max-width: 700px;
+}
 `;
 
-const titleGenerator = (nameGrid) => {
-  console.log(nameGrid);
+const desktopGenerator = (nameGrid) => {
   return (
     <MainTitle>
       <Container>
         {nameGrid.map(row => {
-          console.log("New Row");
           if (row[0] === 'G') {
             return (
               <Row>
                 {
                   row.map(col => {
                     return (
-                      <Col xs md lg xl={nameLength} >
+                      <Col xs sm md lg xl={nameLength} >
                         <MainLetterDiv>
                           <MainLetterText>{col}</MainLetterText>
                         </MainLetterDiv>
@@ -98,9 +117,15 @@ const titleGenerator = (nameGrid) => {
   );
 }
 
+const TitleComponent = () => {
+  const { width } = useViewport();
+  console.log("Width", width);
+  return (width < breakpoint) ? <h1>Mobile</h1> : desktopGenerator(nameGrid);
+}
+
 const Title = () => (
   <>
-    {titleGenerator(nameGrid)}
+    <TitleComponent />
   </>
 )
 
