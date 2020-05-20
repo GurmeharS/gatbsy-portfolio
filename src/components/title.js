@@ -4,25 +4,28 @@ import { Container, Row, Col } from 'react-bootstrap'
 import "../styles/styles.scss"
 import { useViewport } from "./viewport"
 
-const constants = require('./constant.js');
+import * as constants from './constant';
+
 const nameGrid = constants.nameGrid;
-const size = constants.size;
-const nameLength = nameGrid.length;
-const breakpoint = 475; // This width breaks the title
+const mobileGrid = constants.mobileGrid;
+const size = constants.device;
+const breakpoint = 650; // This width (px) breaks the desktop title
 
 
 const MainTitle = styled.div`
 display: flex;
 flex-wrap: nowrap;
-height: 95vh;
 width: 95vw;
+justify-content: center;
+align-items: center;
 `;
 
 const MainLetterText = styled.h1`
 font-size: 50px;
 color: white;
-@media ${size.mobileL} {
-  font-size: 25px;
+font-family: "BalsamiqSans-BoldItalic";
+@media ${size.mobileXL} {
+  /* font-size: 25px; */
 }
 `;
 
@@ -32,17 +35,22 @@ width: 100px;
 margin: 10px;
 text-align: center;
 line-height: 50px;
-@media ${size.mobileL} {
-  width: 30px;
+
+@media ${size.mobileXL} {
+  width: auto;
+  text-align: left;
+  line-height: 30px;
+  height: auto;
+  margin: 0;
+  margin-top: 1vh;
 }
 `;
 
 const SecLetterText = styled.p`
 font-size: 40px;
 color: black;
-@media ${size.mobileL} {
-  font-size: 20px;
-  display: none;
+@media ${size.mobileXL} {
+  /* font-size: 20px; */
 }
 `;
 
@@ -53,38 +61,31 @@ margin-left: 10px;
 margin-top: 3px;
 text-align: center;
 line-height: 35px;
-@media ${size.mobileL} {
-  width: 30px;
+
+@media ${size.mobileXL} {
+  width: auto;
+  text-align: left;
+  line-height: 50px;
+  margin: 0;
+  margin-top: 1vh;
 }
 `;
 
-const Page = styled.div`
-@media ${size.mobileS} {
-  max-width: 300px;
-}
-@media ${size.mobileM} {
-  max-width: 350px;
-}
-@media ${size.mobileL} {
-  max-width: 400px;
-}
-@media ${size.tablet} {
-  max-width: 700px;
-}
-`;
 
 const desktopGenerator = (nameGrid) => {
+  const rowLength = nameGrid.length;
   return (
     <MainTitle>
-      <Container>
+      <Container fluid={true}>
         {nameGrid.map(row => {
-          if (row[0] === 'G') {
+          if (row[0] === 'G' || row[0].includes('gurm')) {
             return (
-              <Row>
+              <Row xs sm md lg xl={rowLength}>
                 {
                   row.map(col => {
                     return (
-                      <Col xs sm md lg xl={nameLength} >
+                      // <Col xs sm md lg xl={nameLength} >
+                      <Col>
                         <MainLetterDiv>
                           <MainLetterText>{col}</MainLetterText>
                         </MainLetterDiv>
@@ -96,11 +97,12 @@ const desktopGenerator = (nameGrid) => {
             );
           } else {
             return (
-              <Row>
+              <Row xs sm md lg xl={rowLength}>
                 {
                   row.map(col => {
                     return (
-                      <Col xs md lg xl={nameLength} >
+                      // <Col xs md lg xl={nameLength} >
+                      <Col>
                         <SecLetterDiv>
                           <SecLetterText>{col}</SecLetterText>
                         </SecLetterDiv>
@@ -119,14 +121,15 @@ const desktopGenerator = (nameGrid) => {
 
 const TitleComponent = () => {
   const { width } = useViewport();
-  console.log("Width", width);
-  return (width < breakpoint) ? <h1>Mobile</h1> : desktopGenerator(nameGrid);
+  console.log(width);
+  if (width < breakpoint) {
+    console.log("Should be mobile");
+  }
+  return (width < breakpoint) ? desktopGenerator(mobileGrid) : desktopGenerator(nameGrid);
 }
 
 const Title = () => (
-  <>
-    <TitleComponent />
-  </>
+  <TitleComponent />
 )
 
 export default Title

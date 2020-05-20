@@ -1,4 +1,4 @@
-const nameGrid = [
+export const nameGrid = [
     ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'f', '  ', '  ', '  ', '  '],
     ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'u', '  ', '  ', '  ', '  '],
     ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'l', '  ', '  ', '  ', '  '],
@@ -16,26 +16,25 @@ const nameGrid = [
     ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'r', '  ', '  '],
 ]
 
-const size = {
-    mobileS: '320px',
-    mobileM: '375px',
-    mobileL: '475px',
-    tablet: '768px',
-    laptop: '1024px',
-    laptopL: '1440px',
-    desktop: '2560px'
-}
+export const mobileGrid = [
+    ["hi,"],
+    ["i'm"],
+    ["gurmehar"],
+    ["but"],
+    ["you"],
+    ["can"],
+    ["call"],
+    ["me"],
+    ["gurm."]
+]
 
-const device = {
-    mobileS: `(max-width: ${size.mobileS})`,
-    mobileM: `(max-width: ${size.mobileM})`,
-    mobileL: `(max-width: ${size.mobileL})`,
-    tablet: `(max-width: ${size.tablet})`,
-    laptop: `(max-width: ${size.laptop})`,
-    laptopL: `(max-width: ${size.laptopL})`,
-    desktop: `(max-width: ${size.desktop})`,
-    desktopL: `(max-width: ${size.desktop})`
+export const device = {
+    mobileS: `(max-width: 320px)`,
+    mobileM: `(max-width: 375px)`,
+    mobileL: `(max-width: 475px)`,
+    mobileXL: `(max-width: 650px)`,
+    tablet: `(max-width: 768px)`,
+    laptop: `(max-width: 1024px)`,
+    laptopL: `(max-width: 1440px)`,
+    desktop: `(max-width: 2560px)`
 };
-
-exports.nameGrid = nameGrid;
-exports.size = device;
