@@ -15,7 +15,12 @@ const breakpoint = 650; // This width (px) breaks the desktop title
 const MainTitle = styled.div`
 display: flex;
 flex-wrap: nowrap;
-width: 95vw;
+/* flex-direction: column; */
+/* width: 95vw; */
+/* position: fixed; */
+/* top: 0; right: 0; bottom: 0; left: 0; */
+margin-top: 4vh;
+margin-bottom: 4vh;
 justify-content: center;
 align-items: center;
 `;
@@ -31,10 +36,10 @@ font-family: "BalsamiqSans-BoldItalic";
 
 const MainLetterDiv = styled.div`
 /* background-color: #f1f1f1; */
-width: 100px;
-margin: 10px;
+width: 40px;
+/* margin: 5px; */
 text-align: center;
-line-height: 50px;
+line-height: 4vh;
 
 @media ${size.mobileXL} {
   width: auto;
@@ -56,11 +61,11 @@ color: black;
 
 const SecLetterDiv = styled.div`
 /* background-color: #f1f1f1; */
-width: 100px;
-margin-left: 10px;
+width: 40px;
+/* margin-left: 5px; */
 margin-top: 3px;
 text-align: center;
-line-height: 35px;
+line-height: 4vh;
 
 @media ${size.mobileXL} {
   width: auto;
