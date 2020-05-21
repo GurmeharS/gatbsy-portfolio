@@ -20,7 +20,7 @@ flex-wrap: nowrap;
 /* position: fixed; */
 /* top: 0; right: 0; bottom: 0; left: 0; */
 margin-top: 4vh;
-margin-bottom: 4vh;
+margin-bottom: 10vh;
 justify-content: center;
 align-items: center;
 `;
@@ -29,6 +29,7 @@ const MainLetterText = styled.h1`
 font-size: 50px;
 color: white;
 font-family: "BalsamiqSans-BoldItalic";
+z-index: 1;
 @media ${size.mobileXL} {
   /* font-size: 25px; */
 }
@@ -54,6 +55,7 @@ line-height: 4vh;
 const SecLetterText = styled.p`
 font-size: 40px;
 color: black;
+z-index: 1;
 @media ${size.mobileXL} {
   /* font-size: 20px; */
 }

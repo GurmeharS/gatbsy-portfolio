@@ -2,6 +2,7 @@ import React from "react"
 import "../styles/styles.scss"
 import styled from "styled-components"
 import Title from "../components/title"
+import Header from "../components/header"
 import { ViewportProvider } from "../components/viewport"
 import * as constants from '../components/constant';
 
@@ -31,12 +32,24 @@ top: 0; right: 0; bottom: 0; left: 0; */
 
 
 const IndexPage = () => (
-  <Page>
-    <ViewportProvider>
-      {/* <Header /> */}
-      <Title />
-    </ViewportProvider>
-  </Page>
+  <>
+    <Page>
+      <ViewportProvider>
+        <Title />
+      </ViewportProvider>
+    </Page>
+    <Header />
+    <Page>
+      <ViewportProvider>
+        <Title />
+      </ViewportProvider>
+    </Page>
+    <Page>
+      <ViewportProvider>
+        <Title />
+      </ViewportProvider>
+    </Page>
+  </>
 );
 
 export default IndexPage
