@@ -1,8 +1,10 @@
 import React from "react"
+import { Helmet } from "react-helmet"
 import "../styles/styles.scss"
 import styled from "styled-components"
 import Title from "../components/title"
 import Header from "../components/header"
+import About from "../components/about"
 import { ViewportProvider } from "../components/viewport"
 import * as constants from '../components/constant';
 
@@ -33,22 +35,22 @@ top: 0; right: 0; bottom: 0; left: 0; */
 
 const IndexPage = () => (
   <>
+    <Helmet>
+      <meta charSet="utf-8" />
+      <title>GURMEHAR SANDHU</title>
+      {/* <link rel="canonical" href="http://mysite.com/example" /> */}
+    </Helmet>
     <Page>
       <ViewportProvider>
         <Title />
       </ViewportProvider>
     </Page>
     <Header />
-    <Page>
-      <ViewportProvider>
-        <Title />
-      </ViewportProvider>
-    </Page>
-    <Page>
-      <ViewportProvider>
-        <Title />
-      </ViewportProvider>
-    </Page>
+    {/* <Page> */}
+    <ViewportProvider>
+      <About />
+    </ViewportProvider>
+    {/* </Page> */}
   </>
 );
 

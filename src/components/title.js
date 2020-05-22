@@ -23,6 +23,7 @@ margin-top: 4vh;
 margin-bottom: 10vh;
 justify-content: center;
 align-items: center;
+min-height: 95vh;
 `;
 
 const MainLetterText = styled.h1`
