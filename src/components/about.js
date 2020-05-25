@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react"
 import styled from "styled-components"
 import { gsap, TimelineLite, Power1 } from "gsap"
-
+import $ from 'jquery'
 import "../styles/styles.scss"
 import * as constants from './constant';
 
@@ -179,7 +179,13 @@ const About = () => {
     if (ref.current) {
         if (!visible) {
             console.log("About out");
-            gsap.to(".about", 1, {
+            gsap.to((".about"), 1, {
+                rotation: 10,
+                x: 100,
+                opacity: 0,
+                ease: Power1.easeOut
+            });
+            gsap.to($(".about").children(), 1, {
                 x: 100,
                 opacity: 0,
                 ease: Power1.easeOut
@@ -187,11 +193,20 @@ const About = () => {
         } else {
             console.log("About in");
             gsap.to(".about", 1, {
+                rotation: 0,
                 x: 0,
                 opacity: 1,
                 ease: Power1.easeOut,
                 stagger: {
-                    amount: 0.3
+                    amount: 0.1
+                }
+            });
+            gsap.to($(".about").children(), 1, {
+                x: 0,
+                opacity: 1,
+                ease: Power1.easeOut,
+                stagger: {
+                    amount: 0.1
                 }
             });
         }

@@ -111,13 +111,15 @@ const IndexPage = () => {
       </div>
       <Header />
       {/* <Page> */}
-      <ViewportProvider>
-        <About />
-      </ViewportProvider>
-      {/* </Page> */}
-      <ViewportProvider>
-        <Experience />
-      </ViewportProvider>
+      <div style={{ width: "100%", overflowX: "hidden" }}>
+        <ViewportProvider>
+          <About />
+        </ViewportProvider>
+        {/* </Page> */}
+        <ViewportProvider>
+          <Experience />
+        </ViewportProvider>
+      </div>
     </div>
   );
 }

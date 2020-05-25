@@ -1,7 +1,7 @@
 import { Link } from "gatsby"
 import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
-
+import { gsap, Power1 } from "gsap"
 import * as constants from "./constant"
 
 const size = constants.device;
@@ -39,6 +39,32 @@ const linkStyle = {
 };
 
 
+//Animate on scroll
+const useOnScreen = (options) => {
+  let ref = useRef(null);
+  const [visibile, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      console.log(entry.isIntersecting);
+      setVisible(entry.isIntersecting);
+    }, options);
+    let currRef = null;
+    if (ref.current) {
+      observer.observe(ref.current);
+      currRef = ref.current;
+    }
+
+    return () => {
+      if (currRef) {
+        observer.unobserve(currRef);
+      }
+    }
+  }, [ref, options]);
+
+  return [ref, visibile];
+}
+
 const InnerHeader = () => (
   <Navbar>
     <Link style={linkStyle} to="/">GS</Link>
@@ -49,9 +75,35 @@ const InnerHeader = () => (
 );
 
 const Header = () => {
+  const [ref, visible] = useOnScreen({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.3
+  });
+
+  // Only want to animate the first time:
+  const [animated, setAnimated] = useState(false);
+
+  if (ref.current) {
+    if (visible && !animated) {
+      setAnimated(true);
+      console.log("navbar in");
+      gsap.to(".navbar", 0.5, {
+        scaleX: 1.1,
+        ease: Power1.easeOut
+      });
+      gsap.to(".navbar", 0.5, {
+        scaleX: 1,
+        ease: Power1.easeOut,
+        delay: 0.2
+      });
+    }
+  }
   return (
     <StyledHeader>
-      <InnerHeader />
+      <div ref={ref} className="navbar">
+        <InnerHeader />
+      </div>
     </StyledHeader>
   );
 }

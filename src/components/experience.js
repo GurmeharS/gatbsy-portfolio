@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react"
 import styled from "styled-components"
 import { gsap, Power1 } from 'gsap'
 import "../styles/styles.scss"
-import { useViewport } from "./viewport"
+import $ from 'jquery'
 import Badge from "./badge"
 import * as constants from './constant'
 import gurmPic from '../images/gurmehar_pic.jpg'
@@ -96,20 +96,35 @@ const Experience = () => {
 
     if (ref.current) {
         if (!visible) {
-            console.log("About out");
-            gsap.to(ref.current, 1, {
+            console.log("experience out");
+            gsap.to((".experience"), 1, {
+                rotation: -10,
+                x: -100,
+                opacity: 0,
+                ease: Power1.easeOut
+            });
+            gsap.to($(".experience").children(), 1, {
                 x: -100,
                 opacity: 0,
                 ease: Power1.easeOut
             });
         } else {
-            console.log("About in");
-            gsap.to(ref.current, 1, {
+            console.log("experience in");
+            gsap.to(".experience", 1, {
+                rotation: 0,
                 x: 0,
                 opacity: 1,
                 ease: Power1.easeOut,
                 stagger: {
-                    amount: 0.3
+                    amount: 0.1
+                }
+            });
+            gsap.to($(".experience").children(), 1, {
+                x: 0,
+                opacity: 1,
+                ease: Power1.easeOut,
+                stagger: {
+                    amount: 0.1
                 }
             });
         }
@@ -117,7 +132,7 @@ const Experience = () => {
 
     return (
         <ExperienceContainer>
-            <ExperienceBox ref={ref}>
+            <ExperienceBox className="experience" ref={ref}>
                 <ExperienceTitle>My Badges</ExperienceTitle>
                 <BadgeHolder>
                     <Badge badgePic={gurmPic} logoPic={ibmLogo} />
