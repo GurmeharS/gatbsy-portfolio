@@ -1,8 +1,11 @@
 import React from "react"
+import { useRef, useEffect, useState } from "react"
 import styled from "styled-components"
 import { Container, Row, Col } from 'react-bootstrap'
 import "../styles/styles.scss"
 import { useViewport } from "./viewport"
+
+import { gsap, TweenMax, Power3, TimelineLite } from 'gsap'
 
 import * as constants from './constant';
 
@@ -80,20 +83,23 @@ line-height: 4vh;
 `;
 
 
-const desktopGenerator = (nameGrid) => {
-  const rowLength = nameGrid.length;
+const DesktopGenerator = (props) => {
+  const rowLength = props.nameGrid.length;
+  let wholeTitle = useRef(null);
+  let mainRow = useRef(null);
+
   return (
-    <MainTitle>
-      <Container fluid={true}>
-        {nameGrid.map(row => {
+    <MainTitle ref={el => wholeTitle = el}>
+      <Container fluid={true} >
+        {props.nameGrid.map((row, idx) => {
           if (row[0] === 'G' || row[0].includes('gurm')) {
             return (
-              <Row xs sm md lg xl={rowLength}>
+              <Row className="mainRow" xs sm md lg xl={rowLength} ref={el => mainRow = el} key={idx}>
                 {
-                  row.map(col => {
+                  row.map((col, index) => {
                     return (
                       // <Col xs sm md lg xl={nameLength} >
-                      <Col>
+                      <Col key={index}>
                         <MainLetterDiv>
                           <MainLetterText>{col}</MainLetterText>
                         </MainLetterDiv>
@@ -105,12 +111,12 @@ const desktopGenerator = (nameGrid) => {
             );
           } else {
             return (
-              <Row xs sm md lg xl={rowLength}>
+              <Row xs sm md lg xl={rowLength} className='secondaryRows' key={idx} >
                 {
-                  row.map(col => {
+                  row.map((col, index) => {
                     return (
                       // <Col xs md lg xl={nameLength} >
-                      <Col>
+                      <Col key={index}>
                         <SecLetterDiv>
                           <SecLetterText>{col}</SecLetterText>
                         </SecLetterDiv>
@@ -133,11 +139,15 @@ const TitleComponent = () => {
   if (width < breakpoint) {
     console.log("Should be mobile");
   }
-  return (width < breakpoint) ? desktopGenerator(mobileGrid) : desktopGenerator(nameGrid);
+  return (width < breakpoint) ? <DesktopGenerator nameGrid={mobileGrid} /> : <DesktopGenerator nameGrid={nameGrid} />;
 }
 
-const Title = () => (
-  <TitleComponent />
-)
+const Title = () => {
+
+  return (
+    <TitleComponent />
+  )
+}
+
 
 export default Title

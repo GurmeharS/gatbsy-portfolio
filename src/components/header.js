@@ -41,10 +41,10 @@ const linkStyle = {
 
 const InnerHeader = () => (
   <Navbar>
-    <Link style={linkStyle} to="/">Logo</Link>
+    <Link style={linkStyle} to="/">GS</Link>
     <Link style={linkStyle} to="/about">About</Link>
-    <Link style={linkStyle} to="/projects">Projects</Link>
     <Link style={linkStyle} to="/experience">Experience</Link>
+    <Link style={linkStyle} to="/projects">Projects</Link>
   </Navbar>
 );
 
