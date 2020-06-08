@@ -13,7 +13,7 @@ const BadgeHolder = styled.div`
     min-width: 75%;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-around;
     @media ${constants.device.laptop} {
@@ -133,10 +133,11 @@ const Experience = () => {
     return (
         <ExperienceContainer>
             <ExperienceBox className="experience" ref={ref}>
-                <ExperienceTitle>My Badges</ExperienceTitle>
-                <BadgeHolder>
-                    <Badge badgePic={gurmPic} logoPic={ibmLogo} />
-                    <Badge />
+                <ExperienceTitle >
+                    My Badges
+                </ExperienceTitle>
+                <BadgeHolder className="badgeHolder">
+                    <Badge className="badge" badgePic={gurmPic} logoPic={ibmLogo} comp="ibm" />
                 </BadgeHolder>
             </ExperienceBox>
         </ExperienceContainer>
