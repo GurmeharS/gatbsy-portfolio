@@ -135,11 +135,14 @@ const DesktopGenerator = (props) => {
 
 const TitleComponent = () => {
   const { width } = useViewport();
-  console.log(width);
-  if (width < breakpoint) {
-    console.log("Should be mobile");
+  if (typeof window !== `undefined`) {
+    console.log(width);
+    if (width < breakpoint) {
+      console.log("Should be mobile");
+    }
+    return (width < breakpoint) ? <DesktopGenerator nameGrid={mobileGrid} /> : <DesktopGenerator nameGrid={nameGrid} />;
   }
-  return (width < breakpoint) ? <DesktopGenerator nameGrid={mobileGrid} /> : <DesktopGenerator nameGrid={nameGrid} />;
+  return <DesktopGenerator nameGrid={nameGrid} />
 }
 
 const Title = () => {

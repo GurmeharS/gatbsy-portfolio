@@ -9,19 +9,22 @@ export const ViewportProvider = ({ children }) => {
     let windowHeight = typeof window !== `undefined` ? window.innerHeight : 1024;
     const [width, setWidth] = React.useState(windowWidth);
     const [height, setHeight] = React.useState(windowHeight);
-
-    const handleWindowResize = () => {
-        windowWidth = typeof window !== `undefined` ? window.innerWidth : 768;
-        windowHeight = typeof window !== `undefined` ? window.innerHeight : 1024;
-        setWidth(windowWidth);
-        setHeight(windowHeight);
+    let handleWindowResize;
+    if (typeof window !== `undefined`) {
+        handleWindowResize = () => {
+            windowWidth = typeof window !== `undefined` ? window.innerWidth : 768;
+            windowHeight = typeof window !== `undefined` ? window.innerHeight : 1024;
+            setWidth(windowWidth);
+            setHeight(windowHeight);
+        }
     }
 
     React.useEffect(() => {
+        // if (typeof window !== `undefined`) {
         window.addEventListener("resize", handleWindowResize);
         return () => window.removeEventListener("resize", handleWindowResize);
+        // }
     }, []);
-
     return (
         <viewportContext.Provider value={{ width, height }}>
             {children}

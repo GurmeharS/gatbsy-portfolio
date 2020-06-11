@@ -105,9 +105,9 @@ const IndexPage = () => {
       </Helmet>
       <div ref={ref} style={{ width: "100%", overflowX: "hidden" }}>
         <Page>
-          <ViewportProvider>
-            <Title />
-          </ViewportProvider>
+          {/* <ViewportProvider> */}
+          <Title />
+          {/* </ViewportProvider> */}
         </Page>
       </div>
       <Header />
