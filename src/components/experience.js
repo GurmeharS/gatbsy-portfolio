@@ -2,11 +2,12 @@ import React, { useRef, useState, useEffect } from "react"
 import styled from "styled-components"
 import { gsap, Power1 } from 'gsap'
 import "../styles/styles.scss"
-import $ from 'jquery'
 import Badge from "./badge"
 import * as constants from './constant'
 import gurmPic from '../images/gurmehar_pic.jpg'
 import ibmLogo from '../images/IBM_logo.svg'
+// const jq = typeof window !== `undefined` ? require("jquery") : null
+// const $ = jq ? jq.$ : null;
 
 const BadgeHolder = styled.div`
     min-height: 50vh;
@@ -103,7 +104,7 @@ const Experience = () => {
                 opacity: 0,
                 ease: Power1.easeOut
             });
-            gsap.to($(".experience").children(), 1, {
+            gsap.to(".experienceChild", 1, {
                 x: -100,
                 opacity: 0,
                 ease: Power1.easeOut
@@ -119,7 +120,7 @@ const Experience = () => {
                     amount: 0.1
                 }
             });
-            gsap.to($(".experience").children(), 1, {
+            gsap.to(".experienceChild", 1, {
                 x: 0,
                 opacity: 1,
                 ease: Power1.easeOut,
@@ -133,10 +134,10 @@ const Experience = () => {
     return (
         <ExperienceContainer>
             <ExperienceBox className="experience" ref={ref}>
-                <ExperienceTitle >
+                <ExperienceTitle className="experienceChild">
                     My Badges
                 </ExperienceTitle>
-                <BadgeHolder className="badgeHolder">
+                <BadgeHolder className="badgeHolder experienceChild">
                     <Badge className="badge" badgePic={gurmPic} logoPic={ibmLogo} comp="ibm" />
                 </BadgeHolder>
             </ExperienceBox>

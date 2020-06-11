@@ -4,11 +4,11 @@ import styled from "styled-components"
 import { Container, Row, Col } from 'react-bootstrap'
 import "../styles/styles.scss"
 import { useViewport } from "./viewport"
-
 import { gsap, TweenMax, Power3, TimelineLite } from 'gsap'
 
 import * as constants from './constant';
 
+// const useViewport = typeof window !== `undefined` ? require("viewport") : null
 const nameGrid = constants.nameGrid;
 const mobileGrid = constants.mobileGrid;
 const size = constants.device;

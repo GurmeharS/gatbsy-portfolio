@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useState } from "react"
 import styled from "styled-components"
 import { gsap, TimelineLite, Power1 } from "gsap"
-import $ from 'jquery'
 import "../styles/styles.scss"
 import * as constants from './constant';
 
 import gurmPic from '../images/gurmehar_pic.jpg';
+// import $ from 'jquery'
+const jq = typeof window !== `undefined` ? require("jquery") : null
+const $ = jq ? jq.$ : null;
 
 const AboutImage = styled.img`
     max-width: 150%;
@@ -185,7 +187,8 @@ const About = () => {
                 opacity: 0,
                 ease: Power1.easeOut
             });
-            gsap.to($(".about").children(), 1, {
+
+            gsap.to(".aboutChild", 1, {
                 x: 100,
                 opacity: 0,
                 ease: Power1.easeOut
@@ -201,7 +204,7 @@ const About = () => {
                     amount: 0.1
                 }
             });
-            gsap.to($(".about").children(), 1, {
+            gsap.to(".aboutChild", 1, {
                 x: 0,
                 opacity: 1,
                 ease: Power1.easeOut,
@@ -215,12 +218,12 @@ const About = () => {
     return (
         <AboutContainer>
             <AboutBox ref={ref} className='about'>
-                <AboutImageHolder>
+                <AboutImageHolder className='aboutChild'>
                     <ImgSquare>
                         <AboutImage src={gurmPic} />
                     </ImgSquare>
                 </AboutImageHolder>
-                <AboutTextHolder>
+                <AboutTextHolder className='aboutChild'>
                     <AboutTitle>Who Am I?</AboutTitle>
                     <center>
                         <AboutText>

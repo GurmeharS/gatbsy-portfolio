@@ -13,6 +13,7 @@ import About from "../components/about"
 import { ViewportProvider } from "../components/viewport"
 import * as constants from '../components/constant';
 import Experience from "../components/experience"
+// const ViewportProvider = typeof window !== `undefined` ? require("../components/viewport") : null
 
 const Page = styled.div`
 @media ${constants.device.mobileS} {

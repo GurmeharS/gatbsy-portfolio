@@ -1,14 +1,20 @@
 import React from "react";
+import { window, document } from "browser-monads";
+
 
 const viewportContext = React.createContext({});
 
 export const ViewportProvider = ({ children }) => {
-    const [width, setWidth] = React.useState(window.innerWidth);
-    const [height, setHeight] = React.useState(window.innerHeight);
+    let windowWidth = typeof window !== `undefined` ? window.innerWidth : 768;
+    let windowHeight = typeof window !== `undefined` ? window.innerHeight : 1024;
+    const [width, setWidth] = React.useState(windowWidth);
+    const [height, setHeight] = React.useState(windowHeight);
 
     const handleWindowResize = () => {
-        setWidth(window.innerWidth);
-        setHeight(window.innerHeight);
+        windowWidth = typeof window !== `undefined` ? window.innerWidth : 768;
+        windowHeight = typeof window !== `undefined` ? window.innerHeight : 1024;
+        setWidth(windowWidth);
+        setHeight(windowHeight);
     }
 
     React.useEffect(() => {

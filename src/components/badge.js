@@ -1,11 +1,10 @@
 // Work badge
 import React from "react"
 import { useRef, useState } from "react"
-import { gsap, TweenMax, CSSPlugin, TimelineMax } from 'gsap'
+import { TweenMax, CSSPlugin, TimelineMax } from 'gsap'
 import styled from "styled-components"
-import $ from "jquery"
-
 import * as constants from './constant'
+
 
 const BadgeNotch = styled.div`
     position: absolute;
@@ -160,57 +159,56 @@ const BadgeContainer = styled.div`
 // Need to pass this, badge pic, logo pic, job title, Job dates (string), description
 const Badge = (props) => {
     const [expanded, setExpanded] = useState(false);
+    let cardCont = useRef(null);
     let frontCard = useRef(null);
     let backCard = useRef(null);
 
     CSSPlugin.defaultTransformPerspective = 1000;
 
     //we set the backface 
-    TweenMax.set($(".back"), { rotationY: -180 });
-    $.each($(".cardCont"), (i, element) => {
-        let tl = new TimelineMax({ paused: true });
-        let tlMobile = new TimelineMax({ paused: true });
-        if (frontCard.current && backCard.current) {
-            tl
-                .to(frontCard.current, 1, { rotationY: 180 })
-                .to(backCard.current, 1, { rotationY: 0 }, 0)
-                .to(element, .5, { z: 50 }, 0)
-                .to(element, .5, { z: 0 }, .5);
+    TweenMax.set(backCard.current, { rotationY: -180 });
+    let tl = new TimelineMax({ paused: true });
+    let tlRev = new TimelineMax({ paused: true });
+    let tlMobile = new TimelineMax({ paused: true });
+    if (frontCard.current && backCard.current) {
+        tl
+            .to(frontCard.current, 1, { rotationY: 180 })
+            .to(backCard.current, 1, { rotationY: 0 }, 0)
+            .to(cardCont.current, .5, { z: 50 }, 0)
+            .to(cardCont.current, .5, { z: 0 }, .5);
 
-            element.animation = tl;
-            tlMobile
-                .to(frontCard.current, 1, { rotationY: 180 })
-                .to(".badgeHolder", 1, { scaleY: 0.5 }, 0)
-                .to(".experience", 1, { scaleY: 1.5 }, 0)
-                .to(backCard.current, 1, { rotationY: 0 }, 0)
-                .to(element, .5, { z: 50 }, 0)
-                .to(element, .5, { z: 0 }, .5);
-            element.animationMobile = tlMobile;
-        }
 
-    });
-
-    $(".cardCont").hover(elOver, elOut);
+        // cardCont.animation = tl;
+        tlMobile
+            .to(frontCard.current, 1, { rotationY: 180 })
+            .to(".badgeHolder", 1, { scaleY: 0.5 }, 0)
+            .to(".experience", 1, { scaleY: 1.5 }, 0)
+            .to(backCard.current, 1, { rotationY: 0 }, 0)
+            .to(cardCont.current, .5, { z: 50 }, 0)
+            .to(cardCont.current, .5, { z: 0 }, .5);
+    }
 
     function elOver() {
-        if (window.matchMedia("(max-width: 768px)").matches) {
-            this.animationMobile.play();
+        console.log("In over")
+        if (typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches) {
+            tlMobile.play();
         } else {
-            this.animation.play();
+            tl.play();
         }
     }
 
     function elOut() {
-        if (window.matchMedia("(max-width: 768px)").matches) {
-            this.animationMobile.reverse();
+        if (typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches) {
+            tlMobile.reverse();
         } else {
-            this.animation.reverse();
+            tl.reverse();
         }
     }
 
 
+
     return (
-        <BadgeContainer className="cardCont">
+        <BadgeContainer className="cardCont" onMouseEnter={elOver} onMouseLeave={elOut} ref={cardCont}>
             <BadgeFront className="front" ref={frontCard} >
                 <BadgeNotch />
                 <BadgePic style={{ backgroundImage: `url(${props.badgePic})` }} />
@@ -222,13 +220,12 @@ const Badge = (props) => {
                 <JobInfo>
                     <JobHeader>
                         <h2 style={{ fontSize: 36, color: "#1059A3" }}>Site Reliability Engineer</h2>
-                        <break />
+                        <br />
                         <h3 style={{ fontSize: 18 }}>Summer 2019,</h3>
                         <h3 style={{ fontSize: 18 }}>May 2020 - <b>Now</b></h3>
                     </JobHeader>
                     <JobDesc>
                         <ul >
-                            <li>Helping make IBMer lives easier!</li>
                             <li>A DevOps role with a focus on the <b>Dev</b></li>
                             <li>
                                 Some of my favourite projects that I've worked on:
