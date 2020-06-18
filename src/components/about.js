@@ -129,6 +129,7 @@ const AboutBox = styled.div`
     align-items: center;
     @media ${constants.device.laptop} {
         flex-direction: column;
+        overflow-y: visible;
     }
 `;
 
@@ -142,6 +143,7 @@ const AboutContainer = styled.div`
     @media ${constants.device.laptop} {
         flex-direction: column;
         height: auto;
+        overflow-y: visible;
     }
 `;
 

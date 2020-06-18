@@ -5,7 +5,6 @@ import { TweenMax, CSSPlugin, TimelineMax } from 'gsap'
 import styled from "styled-components"
 import * as constants from './constant'
 
-
 const BadgeNotch = styled.div`
     position: absolute;
     top: 10px;
@@ -101,12 +100,8 @@ const JobDesc = styled.div`
 `;
 
 const BadgeBack = styled.div`
-    /* min-height: 100%; */
     min-width: 60vw;
     border-radius: 15px;
-    /* margin: 20px;
-    margin-bottom: 30px;
-    margin-top: 0; */
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -150,7 +145,6 @@ const BadgeContainer = styled.div`
     }
     @media ${constants.device.tablet} {
         min-height: 300px;
-        
     }
     @media ${constants.device.mobileXL} {
         height: 200px;
@@ -177,12 +171,10 @@ const Badge = (props) => {
             .to(cardCont.current, .5, { z: 50 }, 0)
             .to(cardCont.current, .5, { z: 0 }, .5);
 
-
-        // cardCont.animation = tl;
         tlMobile
             .to(frontCard.current, 1, { rotationY: 180 })
             .to(".badgeHolder", 1, { scaleY: 0.5 }, 0)
-            .to(".experience", 1, { scaleY: 1.5 }, 0)
+            .to(".experience", 1, { scaleY: 1.5, scaleX: 1.3 }, 0)
             .to(backCard.current, 1, { rotationY: 0 }, 0)
             .to(cardCont.current, .5, { z: 50 }, 0)
             .to(cardCont.current, .5, { z: 0 }, .5);
@@ -204,8 +196,6 @@ const Badge = (props) => {
             tl.reverse();
         }
     }
-
-
 
     return (
         <BadgeContainer className="cardCont" onMouseEnter={elOver} onMouseLeave={elOut} ref={cardCont}>

@@ -24,4 +24,5 @@ html, body {
     font-family: "BalsamiqSans-Regular";
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
