@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react"
 import styled from "styled-components"
 import { gsap, Power1 } from 'gsap'
-import "../styles/styles.scss"
+import "../styles/styles.css"
 import Badge from "./badge"
 import * as constants from './constant'
 import gurmPic from '../images/gurmehar_pic.jpg'

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react"
 import styled from "styled-components"
 import { gsap, TimelineLite, Power1 } from "gsap"
-import "../styles/styles.scss"
+import "../styles/styles.css"
 import * as constants from './constant';
 
 import gurmPic from '../images/gurmehar_pic.jpg';
@@ -91,7 +91,7 @@ const AboutTitle = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 10px;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
     color: white;
     font-size: 30px;
     @media ${constants.device.mobileXL} {

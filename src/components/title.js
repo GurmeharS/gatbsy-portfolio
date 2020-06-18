@@ -1,8 +1,9 @@
 import React from "react"
 import { useRef, useEffect, useState } from "react"
 import styled from "styled-components"
+import "../styles/styles.css"
 import { Container, Row, Col } from 'react-bootstrap'
-import "../styles/styles.scss"
+import { ViewportProvider } from "../components/viewport"
 import { useViewport } from "./viewport"
 import { gsap, TweenMax, Power3, TimelineLite } from 'gsap'
 
@@ -19,7 +20,7 @@ const MainTitle = styled.div`
 display: flex;
 flex-wrap: nowrap;
 /* flex-direction: column; */
-/* width: 95vw; */
+width: 95vw;
 /* position: fixed; */
 /* top: 0; right: 0; bottom: 0; left: 0; */
 margin-top: 4vh;
@@ -45,14 +46,20 @@ width: 40px;
 /* margin: 5px; */
 text-align: center;
 line-height: 4vh;
+display: flex;
+justify-content: center;
+align-items: center;
+max-height: 6vh;
 
 @media ${size.mobileXL} {
+  max-height: auto;
   width: auto;
   text-align: left;
   line-height: 30px;
   height: auto;
   margin: 0;
   margin-top: 1vh;
+  margin-left: 1rem;
 }
 `;
 
@@ -72,64 +79,77 @@ width: 40px;
 margin-top: 3px;
 text-align: center;
 line-height: 4vh;
+display: flex;
+justify-content: center;
+align-items: center;
+max-height: 6vh;
+
 
 @media ${size.mobileXL} {
+  max-height: auto;
   width: auto;
   text-align: left;
   line-height: 50px;
   margin: 0;
   margin-top: 1vh;
+  margin-left: 1rem;
 }
 `;
 
 
-const DesktopGenerator = (props) => {
-  const rowLength = props.nameGrid.length;
-  let wholeTitle = useRef(null);
-  let mainRow = useRef(null);
+// For the title
+const useOnScreen = (options) => {
+  let ref = useRef(null);
+  const [visibile, setVisible] = useState(false);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      console.log(entry.isIntersecting);
+      setVisible(entry.isIntersecting);
+    }, options);
+    let currRef = null;
+    if (ref.current) {
+      observer.observe(ref.current);
+      currRef = ref.current;
+    }
+
+    return () => {
+      if (currRef) {
+        observer.unobserve(currRef);
+      }
+    }
+  }, [ref, options]);
+
+  return [ref, visibile];
+}
+
+const DesktopGenerator = (props) => {
+  const [ref, visible] = useOnScreen({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.3
+  });
+
+  if (ref.current) {
+    if (!visible) {
+      console.log("title OUT");
+      gsap.to(".secondaryRows", 1.4, { opacity: 0.3, x: -100, ease: Power3.easeOut });
+      gsap.to(".mainRow", 1.4, { opacity: 0.3, x: 100, ease: Power3.easeOut });
+    } else {
+      console.log("title IN");
+      gsap.to(".secondaryRows", 1.4, { opacity: 1, x: 0, ease: Power3.easeOut });
+      gsap.to(".mainRow", 1.4, { opacity: 1, x: 0, ease: Power3.easeOut });
+    }
+  }
+  // Section height calculation
+  // const verticalLength = `${Math.max(Math.floor(100 / nameGrid.length), 6).toString()}vh`;
+  // console.log("VLENGTH", verticalLength);
   return (
-    <MainTitle ref={el => wholeTitle = el}>
-      <Container fluid={true} >
-        {props.nameGrid.map((row, idx) => {
-          if (row[0] === 'G' || row[0].includes('gurm')) {
-            return (
-              <Row className="mainRow" xs sm md lg xl={rowLength} ref={el => mainRow = el} key={idx}>
-                {
-                  row.map((col, index) => {
-                    return (
-                      // <Col xs sm md lg xl={nameLength} >
-                      <Col key={index}>
-                        <MainLetterDiv>
-                          <MainLetterText>{col}</MainLetterText>
-                        </MainLetterDiv>
-                      </Col>
-                    );
-                  })
-                }
-              </Row>
-            );
-          } else {
-            return (
-              <Row xs sm md lg xl={rowLength} className='secondaryRows' key={idx} >
-                {
-                  row.map((col, index) => {
-                    return (
-                      // <Col xs md lg xl={nameLength} >
-                      <Col key={index}>
-                        <SecLetterDiv>
-                          <SecLetterText>{col}</SecLetterText>
-                        </SecLetterDiv>
-                      </Col>
-                    );
-                  })
-                }
-              </Row>
-            );
-          }
-        })}
-      </Container>
-    </MainTitle>
+    <div ref={ref}>
+      <MainTitle>
+        {props.cont}
+      </MainTitle>
+    </div>
   );
 }
 
@@ -140,15 +160,366 @@ const TitleComponent = () => {
     if (width < breakpoint) {
       console.log("Should be mobile");
     }
-    return (width < breakpoint) ? <DesktopGenerator nameGrid={mobileGrid} /> : <DesktopGenerator nameGrid={nameGrid} />;
   }
-  return <DesktopGenerator nameGrid={nameGrid} />
+  const rowLength = nameGrid[0].length;
+  console.log("Row Length", rowLength);
+  const desktopContainer = (
+    <Container fluid={true}>
+      < Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={0} className="secondaryRows" >
+        {
+          nameGrid[0].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row >
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={1} className="secondaryRows">
+        {
+          nameGrid[1].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={2} className="secondaryRows">
+        {
+          nameGrid[2].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={3} className="secondaryRows">
+        {
+          nameGrid[3].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={4} className="secondaryRows">
+        {
+          nameGrid[4].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={5} className="secondaryRows">
+        {
+          nameGrid[5].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={6} className="mainRow">
+        {
+          nameGrid[6].map((col, index) => {
+            return (
+              // <Col xs sm md lg xl={nameLength} >
+              <Col key={index}>
+                <MainLetterDiv>
+                  <MainLetterText>{col}</MainLetterText>
+                </MainLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={7} className="secondaryRows">
+        {
+          nameGrid[7].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={8} className="secondaryRows">
+        {
+          nameGrid[8].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={9} className="secondaryRows">
+        {
+          nameGrid[9].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={10} className="secondaryRows">
+        {
+          nameGrid[10].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={11} className="secondaryRows">
+        {
+          nameGrid[11].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={12} className="secondaryRows">
+        {
+          nameGrid[12].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={13} className="secondaryRows">
+        {
+          nameGrid[13].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={14} className="secondaryRows">
+        {
+          nameGrid[14].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+    </Container>
+  )
+  const mobileContainer = (
+    <Container fluid={true}>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={0} className="secondaryRows">
+        {
+          mobileGrid[0].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={1} className="secondaryRows">
+        {
+          mobileGrid[1].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={2} className="mainRow">
+        {
+          mobileGrid[2].map((col, index) => {
+            return (
+              // <Col xs sm md lg xl={nameLength} >
+              <Col key={index}>
+                <MainLetterDiv>
+                  <MainLetterText>{col}</MainLetterText>
+                </MainLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={3} className="secondaryRows">
+        {
+          mobileGrid[3].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={4} className="secondaryRows">
+        {
+          mobileGrid[4].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={5} className="secondaryRows">
+        {
+          mobileGrid[5].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={6} className="secondaryRows">
+        {
+          mobileGrid[6].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={7} className="secondaryRows">
+        {
+          mobileGrid[7].map((col, index) => {
+            return (
+              // <Col xs md lg xl={nameLength} >
+              <Col key={index}>
+                <SecLetterDiv >
+                  <SecLetterText>{col}</SecLetterText>
+                </SecLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+      <Row xs sm md lg xl={rowLength} style={{ display: "flex", minWidth: "95vw", justifyContent: "space-between", maxHeight: "95vh" }} key={8} className="mainRow">
+        {
+          mobileGrid[8].map((col, index) => {
+            return (
+              // <Col xs sm md lg xl={nameLength} >
+              <Col key={index}>
+                <MainLetterDiv>
+                  <MainLetterText>{col}</MainLetterText>
+                </MainLetterDiv>
+              </Col>
+            );
+          })
+        }
+      </Row>
+    </Container>
+  )
+  return (width < breakpoint) ? <DesktopGenerator cont={mobileContainer} /> : <DesktopGenerator cont={desktopContainer} />;
+  // return <DesktopGenerator nameGrid={nameGrid} />
 }
+
+
+
 
 const Title = () => {
 
   return (
-    <TitleComponent />
+    <ViewportProvider>
+      <TitleComponent />
+    </ViewportProvider>
   )
 }
 

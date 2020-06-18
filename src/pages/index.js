@@ -5,14 +5,14 @@ import { gsap, TweenMax, Power3, TimelineLite } from 'gsap'
 
 import CSSRulePlugin from 'gsap/CSSRulePlugin'
 
-import "../styles/styles.scss"
+import "../styles/styles.css"
 import styled from "styled-components"
-import Title from "../components/title"
 import Header from "../components/header"
+import Title from "../components/title"
 import About from "../components/about"
+import Experience from "../components/experience"
 import { ViewportProvider } from "../components/viewport"
 import * as constants from '../components/constant';
-import Experience from "../components/experience"
 // const ViewportProvider = typeof window !== `undefined` ? require("../components/viewport") : null
 
 const Page = styled.div`
@@ -76,20 +76,20 @@ const IndexPage = () => {
     threshold: 0.3
   });
 
-  if (ref.current) {
-    if (!visible) {
-      console.log("title OUT");
-      gsap.to(".secondaryRows", 1.4, { opacity: 0.3, x: -100, ease: Power3.easeOut });
-      gsap.to(".mainRow", 1.4, { opacity: 0.3, x: 100, ease: Power3.easeOut });
-    } else {
-      console.log("title IN");
-      gsap.to(".secondaryRows", 1.4, { opacity: 1, x: 0, ease: Power3.easeOut });
-      gsap.to(".mainRow", 1.4, { opacity: 1, x: 0, ease: Power3.easeOut });
-    }
-  }
+  // if (ref.current) {
+  //   if (!visible) {
+  //     console.log("title OUT");
+  //     gsap.to(".secondaryRows", 1.4, { opacity: 0.3, x: -100, ease: Power3.easeOut });
+  //     gsap.to(".mainRow", 1.4, { opacity: 0.3, x: 100, ease: Power3.easeOut });
+  //   } else {
+  //     console.log("title IN");
+  //     gsap.to(".secondaryRows", 1.4, { opacity: 1, x: 0, ease: Power3.easeOut });
+  //     gsap.to(".mainRow", 1.4, { opacity: 1, x: 0, ease: Power3.easeOut });
+  //   }
+  // }
 
   useEffect(() => {
-    tl.to(app, 0, { css: { visibility: 'visible' } });
+    tl.to(".app", 0, { css: { visibility: 'visible' } });
     tl.to(".secondaryRows", 0.01, { opacity: 0.3, x: -10000 });
     tl.to(".mainRow", 0.01, { opacity: 0.3, x: 10000 });
   }, []);
