@@ -68,6 +68,7 @@ const BadgeFront = styled.div`
     }
     @media ${constants.device.mobileXL} {
         height: 200px;
+        visibility: hidden;
     }
 `;
 
@@ -121,11 +122,13 @@ const BadgeBack = styled.div`
     }
 
     /* Change this because of flex direction change */
+    /* @media ${constants.device.tablet} {
+        min-height: 300px;
+    } */
     @media ${constants.device.tablet} {
         min-height: 300px;
-    }
-    @media ${constants.device.mobileXL} {
-        min-height: 300px;
+        width: 65vw;
+        visibility: visible;
     }
 `;
 
@@ -145,36 +148,30 @@ const BadgeContainer = styled.div`
     }
     @media ${constants.device.tablet} {
         min-height: 300px;
+        min-height: 70vh;
+        /* align-items: space-around; */
     }
     @media ${constants.device.mobileXL} {
-        height: 200px;
+        min-height: 110vh;
+        height: auto;
     }
 `;
 // Need to pass this, badge pic, logo pic, job title, Job dates (string), description
 const Badge = (props) => {
-    const [expanded, setExpanded] = useState(false);
     let cardCont = useRef(null);
     let frontCard = useRef(null);
     let backCard = useRef(null);
 
     CSSPlugin.defaultTransformPerspective = 1000;
 
-    //we set the backface 
-    TweenMax.set(backCard.current, { rotationY: -180 });
+    //we set the backface
+    if (!(typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches)) {
+        TweenMax.set(backCard.current, { rotationY: -180 });
+    }
     let tl = new TimelineMax({ paused: true });
-    let tlRev = new TimelineMax({ paused: true });
-    let tlMobile = new TimelineMax({ paused: true });
     if (frontCard.current && backCard.current) {
         tl
             .to(frontCard.current, 1, { rotationY: 180 })
-            .to(backCard.current, 1, { rotationY: 0 }, 0)
-            .to(cardCont.current, .5, { z: 50 }, 0)
-            .to(cardCont.current, .5, { z: 0 }, .5);
-
-        tlMobile
-            .to(frontCard.current, 1, { rotationY: 180 })
-            .to(".badgeHolder", 1, { scaleY: 0.5 }, 0)
-            .to(".experience", 1, { scaleY: 1.5, scaleX: 1.3 }, 0)
             .to(backCard.current, 1, { rotationY: 0 }, 0)
             .to(cardCont.current, .5, { z: 50 }, 0)
             .to(cardCont.current, .5, { z: 0 }, .5);
@@ -182,17 +179,13 @@ const Badge = (props) => {
 
     function elOver() {
         console.log("In over")
-        if (typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches) {
-            tlMobile.play();
-        } else {
+        if (!(typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches)) {
             tl.play();
         }
     }
 
     function elOut() {
-        if (typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches) {
-            tlMobile.reverse();
-        } else {
+        if (!(typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches)) {
             tl.reverse();
         }
     }

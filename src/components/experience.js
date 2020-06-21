@@ -47,6 +47,13 @@ const ExperienceBox = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media ${constants.device.tablet} {
+        min-height: 80vh;
+        height: auto;
+    }
+    @media ${constants.device.mobileXL} {
+        min-height: 120vh;
+    }
 `;
 
 const ExperienceContainer = styled.div`
@@ -135,7 +142,7 @@ const Experience = () => {
         <ExperienceContainer>
             <ExperienceBox className="experience" ref={ref}>
                 <ExperienceTitle className="experienceChild">
-                    My Badges
+                    My Work Experience
                 </ExperienceTitle>
                 <BadgeHolder className="badgeHolder experienceChild">
                     <Badge className="badge" badgePic={gurmPic} logoPic={ibmLogo} comp="ibm" />

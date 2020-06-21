@@ -9,6 +9,7 @@ import Header from "../components/header"
 import Title from "../components/title"
 import About from "../components/about"
 import Experience from "../components/experience"
+import Projects from "../components/projects"
 import { ViewportProvider } from "../components/viewport"
 import * as constants from '../components/constant';
 
@@ -88,7 +89,7 @@ const IndexPage = () => {
           <Title />
         </Page>
       </div>
-      <Header />
+      {/* <Header /> */}
       <div style={{ width: "100%", overflow: "hidden" }}>
         <ViewportProvider>
           <About />
@@ -97,6 +98,11 @@ const IndexPage = () => {
       <div style={{ width: "100%", overflow: "hidden" }}>
         <ViewportProvider>
           <Experience />
+        </ViewportProvider>
+      </div>
+      <div style={{ width: "100%", overflow: "hidden" }}>
+        <ViewportProvider>
+          <Projects />
         </ViewportProvider>
       </div>
     </div>

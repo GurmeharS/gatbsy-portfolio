@@ -94,6 +94,7 @@ const AboutTitle = styled.div`
     margin-bottom: 1rem;
     color: white;
     font-size: 30px;
+    text-align: center;
     @media ${constants.device.mobileXL} {
         font-size: 20px;
     }
