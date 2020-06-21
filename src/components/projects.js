@@ -106,10 +106,52 @@ const ProjectsBox = styled.div`
 
 const Projects = () => {
 
+    const [ref, visible] = useOnScreen({
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.3
+    });
+
+    if (ref.current) {
+        if (!visible) {
+            console.log("projects out");
+            gsap.to((".projects"), 1, {
+                rotation: 10,
+                x: 100,
+                opacity: 0,
+                ease: Power1.easeOut
+            });
+            gsap.to(".projectsChild", 1, {
+                x: 100,
+                opacity: 0,
+                ease: Power1.easeOut
+            });
+        } else {
+            console.log("projects in");
+            gsap.to(".projects", 1, {
+                rotation: 0,
+                x: 0,
+                opacity: 1,
+                ease: Power1.easeOut,
+                stagger: {
+                    amount: 0.1
+                }
+            });
+            gsap.to(".projectsChild", 1, {
+                x: 0,
+                opacity: 1,
+                ease: Power1.easeOut,
+                stagger: {
+                    amount: 0.1
+                }
+            });
+        }
+    }
+
     return (
-        <ProjectsBox>
-            <ProjectTitle>My Projects</ProjectTitle>
-            <ProjectsHolder>
+        <ProjectsBox ref={ref} className="projects">
+            <ProjectTitle className="projectsChild">My Projects</ProjectTitle>
+            <ProjectsHolder className="projectsChild">
                 <Project>
                     <ProjectName>WhenToWatch</ProjectName>
                     <ProjectDescription>An analyzer and notifier for when to tune into NBA games!</ProjectDescription>
