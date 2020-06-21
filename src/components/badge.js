@@ -68,7 +68,7 @@ const BadgeFront = styled.div`
     }
     @media ${constants.device.mobileXL} {
         height: 200px;
-        visibility: hidden;
+        /* visibility: hidden; */
     }
 `;
 
@@ -128,7 +128,7 @@ const BadgeBack = styled.div`
     @media ${constants.device.tablet} {
         min-height: 300px;
         width: 65vw;
-        visibility: visible;
+        visibility: hidden;
     }
 `;
 
@@ -181,6 +181,8 @@ const Badge = (props) => {
         console.log("In over")
         if (!(typeof window !== `undefined` && window.matchMedia("(max-width: 768px)").matches)) {
             tl.play();
+        } else {
+            window.alert("For more details please open this page on a larger screen.")
         }
     }
 

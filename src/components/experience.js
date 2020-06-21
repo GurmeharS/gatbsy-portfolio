@@ -20,6 +20,10 @@ const BadgeHolder = styled.div`
     @media ${constants.device.laptop} {
         flex-direction: column;
     }
+    @media ${constants.device.mobileXL} {
+        /* min-height: 120vh; */
+        height: 400px;
+    }
 `;
 
 const ExperienceTitle = styled.div`
@@ -52,7 +56,8 @@ const ExperienceBox = styled.div`
         height: auto;
     }
     @media ${constants.device.mobileXL} {
-        min-height: 120vh;
+        /* min-height: 120vh; */
+        min-height: 50vh;
     }
 `;
 
