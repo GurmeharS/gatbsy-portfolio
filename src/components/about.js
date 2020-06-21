@@ -232,7 +232,6 @@ const About = () => {
                         <AboutText>
                             I'm Gurmehar Sandhu.<br />
                             Welcome to my website/portfolio.<br />
-                            I'm not a fan of long paragraphs, so here are some quick facts about me:
                         </AboutText>
                     </center>
                     <AboutList>
